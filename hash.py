@@ -27,10 +27,22 @@ class HashTable:
                     pair[1] = value
                     return
             self.table[index].append([key, value])
-    
-    
+
+    def search(self, key):
+            index = self.hash_per(key)
+            for pair in self.table[index]:
+                if pair[0] == key:
+                    return pair[1]  
+            return None  
 
 
+    def delete(self, key):
+            index = self.hash_per(key)
+            for i, pair in enumerate(self.table[index]):
+                if pair[0] == key:
+                    del self.table[index][i]  
+                    return
+            print("Key not found")
 
     def __str__(self):
         return str(self.table)

@@ -1,8 +1,7 @@
 class HashTable:
     def __init__(self, size=10):
         self.size = size
-        self.table = [None] * self.size
-
+        self.table = [[] for _ in range(self.size)] 
 
     def hash_multiplicativa(self,key):
         aurea = 0.6180339887
@@ -12,13 +11,20 @@ class HashTable:
     def hash_XOR(self,key):
         hash_value = 0
         for i in key:
-            hash_value ^= hash_value << 3 + hash_value >>7 + ord(i)
-        return hash_value
+            hash_value ^= (hash_value << 3) + (hash_value >> 7) + ord(i)
+        return hash_value % self.size
 
     def hash_per(self,key):
         byte_data = str(key).encode()
         byte_sum = sum(byte_data)
         return (byte_sum * 31) % self.size
+    
+    def mi_hash(self, key):
+        suma = 0
+        for letra in str(key):
+            suma += ord(letra)
+        return suma % self.size
+
 
     def insert(self, key, value):
             index = self.hash_per(key)

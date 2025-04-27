@@ -21,18 +21,14 @@ class HashTable:
         return (byte_sum * 31) % self.size
 
     def insert(self, key, value):
-        index = self.hash_multiplicativa(key)
-        
-        original_index = index
-        while self.table[index] is not None:
-            if self.table[index][0] == key: 
-                self.table[index] = (key, value)
-                return
-            index = (index + 1) % self.size
-            if index == original_index:  
-                raise Exception("HashTable is full")
-        
-        self.table[index] = (key, value)
+            index = self.hash_per(key)
+            for pair in self.table[index]:
+                if pair[0] == key:
+                    pair[1] = value
+                    return
+            self.table[index].append([key, value])
+    
+    
 
 
 

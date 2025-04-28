@@ -66,5 +66,80 @@ class HashTable:
         print("Key not found")
 
     def __str__(self):
-        return str(self.table)
-    
+        result = []
+        for i in range(self.size):
+            chain = []
+            current = self.table[i]
+            while current:
+                chain.append(f"({current.key}, {current.value})")
+                current = current.next
+            result.append(f"[{i}]: " + " -> ".join(chain))
+        return "\n".join(result)
+
+def find_duplicates(arr):
+    tabla = HashTable()
+    duplicados = []
+    for elemento in arr:
+        if tabla.search(elemento) is not None:
+            if elemento not in duplicados:
+                duplicados.append(elemento)
+        else:
+            tabla.insert(elemento, True)
+    return duplicados
+
+
+def count_elements(arr):
+    tabla = HashTable()
+    for elemento in arr:
+        cantidad = tabla.search(elemento)
+        if cantidad is None:
+            tabla.insert(elemento, 1)
+        else:
+            tabla.delete(elemento)
+            tabla.insert(elemento, cantidad + 1)
+
+    resultado = {}
+    for i in range(tabla.size):
+        actual = tabla.table[i]
+        while actual:
+            resultado[actual.key] = actual.value
+            actual = actual.next
+    return resultado
+
+
+
+'''
+# Crear tabla hash
+ht = HashTable()
+
+# Insertar valores
+ht.insert("a", 1)
+ht.insert("b", 2)
+ht.insert("c", 3)
+print(ht)
+# Buscar valores
+print("Buscar 'a':", ht.search("a"))  # debería devolver 1
+print("Buscar 'b':", ht.search("b"))  # debería devolver 2
+print("Buscar 'c':", ht.search("c"))  # debería devolver 3
+
+# Eliminar 'b'
+ht.delete("b")
+
+# Buscar 'b' de nuevo
+print("Buscar 'b' después de eliminar:", ht.search("b"))  # debería devolver None
+
+# Mostrar estado de la tabla
+print("\nEstado de la tabla hash:")
+print(ht)
+
+'''
+# Pruebas
+if __name__ == "__main__":
+    lista1 = ["manzana", "pera", "manzana", "uva", "pera", "pera", "kiwi"]
+    lista2 = [1, 2, 3, 4, 5, 2, 1, 6, 7, 2]
+
+    print("Duplicados en lista1:", find_duplicates(lista1))
+    print("Duplicados en lista2:", find_duplicates(lista2))
+
+    print("Frecuencia en lista1:", count_elements(lista1))
+    print("Frecuencia en lista2:", count_elements(lista2))    
